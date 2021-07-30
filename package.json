@@ -1,0 +1,16 @@
+{
+  "name": "basic_mentor_example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --inspect ./index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "typeorm": "^0.2.35"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
