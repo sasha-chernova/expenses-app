@@ -47,6 +47,14 @@ module.exports = {
         const updatedUsers = users.filter(user => userId != user.id);
         fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify([...updatedUsers, {...currentUser, ...updatedUser}]));
     },
+    getUser: (userId) => {
+        const users = getDBUsers();
+        const currentUser = users.find(user => userId == user.id);
+        if(!currentUser) {
+            throw Error('Not found');
+        };
+        return currentUser;
+    },
     deleteUser: (userId) => {
         const users = getDBUsers();
         const currentUser = users.find(user => userId == user.id);
@@ -70,6 +78,7 @@ module.exports = {
         fs.writeFileSync(join(DB_BASEPATH, 'expenses.json'), JSON.stringify(expenses));
     },
     deleteExpenses: (userId, expensesId) => {
+        if(!userId && !expensesId) throw Error('Not found');
         const allExpenses = getDBExpenses();
         const userExpenses = allExpenses.filter(exp => exp.userId == userId);
         const otherUsersExp = allExpenses.filter(exp => exp.userId != userId);
@@ -78,7 +87,9 @@ module.exports = {
     },
     getUserExpenses: (userId, expensesId) => {
         const allExpenses = getDBExpenses();
-        return allExpenses.find(exp => exp.userId == userId && exp.id == expensesId);
+        const result = allExpenses.find(exp => exp.userId == userId && exp.id == expensesId);
+        if(!result) throw Error('Not found');
+        return result;
     },
     updateUserExpenses: (userId, expensesId, data) => {
         const allExpenses = getDBExpenses();
@@ -86,5 +97,5 @@ module.exports = {
         const updatedExpenses = {...currentExpenses, ...data};
         const otherExp = allExpenses.filter(exp => exp.id != expensesId);
         fs.writeFileSync(join(DB_BASEPATH, 'expenses.json'), JSON.stringify([...otherExp, updatedExpenses]));
-    },
+    }
 }

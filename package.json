@@ -4,13 +4,29 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --inspect ./index.js"
+     "dev": "nodemon --inspect --watch src ./index.js",
+     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+     "start": "ts-node src/index.ts"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "typeorm": "^0.2.35"
+     "express": "^4.17.1",
+     "md5": "^2.3.0",
+     "pg": "^8.7.1",
+     "typeorm": "0.2.36",
+     "typescript": "4.3.5",
+     "ts-node": "10.1.0",
+     "reflect-metadata": "^0.1.10",
+     "mysql": "^2.14.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+     "@typescript-eslint/eslint-plugin": "^4.29.0",
+     "eslint": "^7.32.0",
+     "eslint-config-airbnb": "^18.2.1",
+     "eslint-config-airbnb-typescript": "^12.3.1",
+     "eslint-plugin-import": "^2.23.4",
+     "nodemon": "^2.0.12",
+     "ts-node": "3.3.0",
+     "@types/node": "^16.4.12",
+     "typescript": "3.3.3333"
   }
 }
