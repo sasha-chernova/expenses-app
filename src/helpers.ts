@@ -3,6 +3,8 @@ import { getAllowedUsers } from './db';
 export const getCurrentUser = async (req) => {
   const users = await getAllowedUsers();
   const currentUser = users
-  .filter(({ userName, userPass }) => `${userName}:${userPass}` === req.headers.authorization);
+  .filter(({ firstName, passwd }) => `${firstName}:${passwd}` === req.headers.authorization);
+  console.log(currentUser)
+
   return currentUser[0];
 }

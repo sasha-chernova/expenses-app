@@ -4,11 +4,32 @@ services:
     build: .
     depends_on:
       - postgres
+    volumes:
+      - "src:/home/app/src"
     ports:
-      - "3000:3000"
+      - "3300:3000"
       - "9229:9229"
 
   postgres:
     image: postgres:11.2-alpine
+    ports:
+      - "5450:5432"
     environment:
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_USER=myuser
+    volumes:
+      - "data:/var/lib/postgresql/data"
+
+volumes:
+  src:
+    driver: "local"
+    driver_opts:
+      type: "efs"
+      device: "$PWD/src"
+      o: "bind,777"
+  data:
+    driver: "local"
+    driver_opts:
+      type: "efs"
+      device: "$PWD/data"
+      o: "bind,777"

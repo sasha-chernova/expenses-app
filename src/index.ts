@@ -1,9 +1,10 @@
 // import { userRouter, expensesRouter } from "./routes";
 import expensesRouter from './routes/expensesRouter';
 import userRouter from './routes/userRouter';
+import { getDBConnection as getDB } from '../src/db/typeorm';
 const express = require('express');
 
-const PORT = '3000';
+const PORT = '3300';
 const server = express();
 
 server.use(express.json());
@@ -21,4 +22,13 @@ function startApp() {
     }
 }
 startApp();
+
+setTimeout(()=>{
+    getDB()
+    .then(() => {
+      server.listen(PORT, () => {
+        console.log('OK');
+      });
+    });
+  }, 7000)
 

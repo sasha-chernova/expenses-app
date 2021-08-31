@@ -1,10 +1,11 @@
-import { getAllExpenses, getAllUserExpenses, addExpenses, deleteExpenses, getUserExpenses, updateUserExpenses } from './../db';
+import { User } from '../db/entities/User';
+import { getAllExpenses, getAllUserExpenses, addExpenses, deleteExpenses, getUserExpenses, updateUserExpenses } from './../db_mock';
 import { getCurrentUser } from './../helpers';
 
 class ExpensesController {
   async create(req, res){
     try{
-      const currentUser = await getCurrentUser(req);
+      const currentUser: any = await getCurrentUser(req);
       addExpenses(currentUser.id, req.body)
       return res.json({
           status: 'OK'
@@ -15,7 +16,7 @@ class ExpensesController {
   };
   async getAll(req, res){
     try{
-      const currentUser = await getCurrentUser(req);
+      const currentUser: any = await getCurrentUser(req);
       const isAdmin = currentUser.roles && currentUser.roles.includes('SITE_ADMIN');
     
       return res.json({
@@ -31,7 +32,7 @@ class ExpensesController {
     const userId = req.params.id;
     try {
       const expensesId = req.params.id;
-      const currentUser = await getCurrentUser(req);
+      const currentUser: any = await getCurrentUser(req);
       updateUserExpenses(currentUser.id, expensesId, req.body);
       return res.json({
           status: 'OK',
@@ -45,7 +46,7 @@ class ExpensesController {
   async delete(req, res){
     try {
       const expensesId = req.params.id;
-      const currentUser = await getCurrentUser(req);
+      const currentUser: any = await getCurrentUser(req);
       deleteExpenses(currentUser.id, expensesId);
       return res.json({
           status: 'OK'
@@ -59,7 +60,7 @@ class ExpensesController {
   async getCurrent(req, res){
     try {
       const expensesId = req.params.id;
-      const currentUser = await getCurrentUser(req);
+      const currentUser: any= await getCurrentUser(req);
       
       return res.json({
           status: 'OK',

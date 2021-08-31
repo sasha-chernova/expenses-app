@@ -1,11 +1,12 @@
+import { User } from '../db/entities/User';
 import { getCurrentUser } from './../helpers';
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 export const authorizeAdminMiddleware = async (req, res, next) => {
-  const currentUser = await getCurrentUser(req);
-  if (currentUser && currentUser.roles && currentUser.roles.includes('SITE_ADMIN')) {
+  const currentUser: any = await getCurrentUser(req);
+  if (currentUser && currentUser.role == 'SITE_ADMIN') {
       return next();
   }
   res.status(403);
@@ -13,7 +14,7 @@ export const authorizeAdminMiddleware = async (req, res, next) => {
 }
 
 export const authorizeMiddleware = async (req, res, next) => {
-  const currentUser = await getCurrentUser(req);
+  const currentUser: any = await getCurrentUser(req);
   if (currentUser) {
       return next();
   }

@@ -8,7 +8,7 @@ import {
   deleteExpenses,
   updateUserExpenses,
   getUserExpenses
-} from './../db';
+} from './../db_mock';
 
 /**
  * @param {import('express').Request} req

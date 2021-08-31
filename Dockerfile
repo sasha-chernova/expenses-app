@@ -5,10 +5,9 @@ WORKDIR /home/app
 
 COPY package.json /home/app/
 
+RUN npm i -g typeorm
 RUN npm i
 
 COPY . /home/app
 
-# RUN npm run build
-
-CMD node index.js
+CMD ["npm", "run", "start:docker"]
