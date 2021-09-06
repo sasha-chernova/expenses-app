@@ -1,9 +1,10 @@
+import { addUser, getAllowedUsers, getUser, updateUser } from '../db';
 import { 
-  addUser, 
-  getAllowedUsers, 
-  updateUser, 
+  // addUser, 
+  // getAllowedUsers, 
+  // updateUser, 
   deleteUser, 
-  getUser, 
+  // getUser, 
   getAllUserExpenses,
   deleteExpenses,
   updateUserExpenses,
@@ -18,14 +19,14 @@ import {
 class UserController{
   async create(req, res){
     try{
-      const {userName, userPass} = req.body;
+      const {userName, userPass, age} = req.body;
       if (!(userName && userPass)) {
           return res.json({
               status: 'error'
           });
       }
-          await addUser({userName, userPass});
-          return res.status(200).json('User created');
+          await addUser({userName, userPass, age});
+          return res.status(200).json('New user created');
       } catch(e) {
           return res.status(500).json(e);
       }

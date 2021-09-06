@@ -21,14 +21,10 @@ function startApp() {
         console.log(e);
     }
 }
-startApp();
+
 
 setTimeout(()=>{
     getDB()
-    .then(() => {
-      server.listen(PORT, () => {
-        console.log('OK');
-      });
-    });
+    .then(startApp)
   }, 7000)
 

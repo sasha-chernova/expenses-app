@@ -2,7 +2,7 @@ const express = require('express')
 const expensesRouter = express.Router();
 
 import { authorizeMiddleware } from '../middlewares/auth';
-import ExpensesController from '../controllers/ExpensesController';
+import ExpensesController from '../controllers/expensesController';
 
 expensesRouter.post('', authorizeMiddleware, ExpensesController.create);
 expensesRouter.get('', authorizeMiddleware, ExpensesController.getAll);

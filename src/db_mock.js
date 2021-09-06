@@ -32,29 +32,29 @@ module.exports = {
     getAllowedUsers: async () => {
         return getDBUsers();
     },
-    addUser: (user) => {
-        const users = getDBUsers();
-        users.push({id: users.length + 1, ...user});
-        fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify(users));
-    },
-    updateUser: (userId, data) => {
-        const users = getDBUsers();
-        const currentUser = users.find(user => userId == user.id);
-        if(!currentUser) {
-            throw Error('Not found');
-        };
-        const updatedUser = {...currentUser, ...data};
-        const updatedUsers = users.filter(user => userId != user.id);
-        fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify([...updatedUsers, {...currentUser, ...updatedUser}]));
-    },
-    getUser: (userId) => {
-        const users = getDBUsers();
-        const currentUser = users.find(user => userId == user.id);
-        if(!currentUser) {
-            throw Error('Not found');
-        };
-        return currentUser;
-    },
+    // addUser: (user) => {
+    //     const users = getDBUsers();
+    //     users.push({id: users.length + 1, ...user});
+    //     fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify(users));
+    // },
+    // updateUser: (userId, data) => {
+    //     const users = getDBUsers();
+    //     const currentUser = users.find(user => userId == user.id);
+    //     if(!currentUser) {
+    //         throw Error('Not found');
+    //     };
+    //     const updatedUser = {...currentUser, ...data};
+    //     const updatedUsers = users.filter(user => userId != user.id);
+    //     fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify([...updatedUsers, {...currentUser, ...updatedUser}]));
+    // },
+    // getUser: (userId) => {
+    //     const users = getDBUsers();
+    //     const currentUser = users.find(user => userId == user.id);
+    //     if(!currentUser) {
+    //         throw Error('Not found');
+    //     };
+    //     return currentUser;
+    // },
     deleteUser: (userId) => {
         const users = getDBUsers();
         const currentUser = users.find(user => userId == user.id);

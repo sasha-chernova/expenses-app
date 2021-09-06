@@ -7,7 +7,7 @@ services:
     volumes:
       - "src:/home/app/src"
     ports:
-      - "3300:3000"
+      - "3300:3300"
       - "9229:9229"
 
   postgres:
