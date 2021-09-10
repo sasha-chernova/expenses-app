@@ -1,8 +1,5 @@
-import { getAllowedUsers, getUserRepository } from './db';
-const  passport = require('passport');
+import { getAllowedUsers } from './db';
 const jwt = require('jsonwebtoken');
-const JwtStrategy = require('passport-jwt').Strategy,
-ExtractJwt = require('passport-jwt').ExtractJwt;
 
 export const getCurrentUser = async (req) => {
   const users = await getAllowedUsers();
@@ -13,27 +10,12 @@ export const getCurrentUser = async (req) => {
 
   return currentUser[0];
 }
-export const getCurrentUserId = async (req) => {
-  const opts: any = {}
-  opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  opts.secretOrKey = process.env.TOKEN_KEY;
-  const jwtStrategy = passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
-    const usersRepository = await getUserRepository();
- 
-    await usersRepository.findOne({id: jwt_payload.id})
-      .then(user => {
-        if(user) {
-          return done(null, user);
-        }
-        return done(null, false);
-      })
-      .catch(err => console.error(err));
-  }));
-  console.log('jwtStrategy', jwtStrategy)
-}
+
 export const generateAccessToken = (id, role, name) => {
   const payload = {
     id, role, name
   };
-  return jwt.sign(payload, process.env.TOKEN_KEY, {expiresIn: '12h', algorithm: 'RS256'});
+  const token = jwt.sign(payload, process.env.TOKEN_KEY, {expiresIn: '12h'});
+  
+  return token
 }

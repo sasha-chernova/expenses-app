@@ -1,7 +1,6 @@
 import { addUser, getUserRepository } from "../db";
 import { generateAccessToken } from "../helpers";
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 class AuthController {
   async registration(req, res){
@@ -32,11 +31,6 @@ class AuthController {
       const users = await getUserRepository();
       const user: any = await users.findOne({where: {firstName: userName}});
 
-      // let JwtStrategy = require('passport-jwt').Strategy,
-      // ExtractJwt = require('passport-jwt').ExtractJwt;
-      // var opts: any = {};
-      // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-      // opts.secretOrKey = process.env.TOKEN_KEY;
       const token = generateAccessToken(user.id, user.role, user.firstName);
 
       if(!user) {

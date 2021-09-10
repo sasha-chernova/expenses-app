@@ -33,10 +33,10 @@ export class Expense {
   })
   time!: number;
 
-  @Column()
-  user_id: number;
+  @Column({name: 'user_id'})
+  userId!: number;
 
   @ManyToOne((type) => User, (user) => user.expenses)
-  // @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
+  @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
   user!: User;
 }

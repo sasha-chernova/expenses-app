@@ -1,10 +1,13 @@
-import { addUser, getAllowedUsers, getUser, updateUser, deleteUser } from '../db';
-import { 
-  getAllUserExpenses,
-  deleteExpenses,
-  updateUserExpenses,
-  getUserExpenses
-} from './../db_mock';
+import { addUser,
+   getAllowedUsers, 
+   getUser, 
+   updateUser, 
+   deleteUser, 
+   getAllUserExpenses,
+   deleteExpenses, 
+   updateUserExpenses,
+    getUserExpenses
+    } from '../db';
 
 /**
  * @param {import('express').Request} req
@@ -95,7 +98,7 @@ class UserController{
       const expensesId = req.params.expensesId;
       return res.json({
           status: 'OK',
-          expenses: getUserExpenses(userId, expensesId)
+          expenses: await getUserExpenses(userId, expensesId)
       });
     } catch(e) {
       return res.status(500).json(e);
@@ -104,8 +107,8 @@ class UserController{
 
   async deleteUserExpenses(req, res){
     try {
-      const expensesId = req.params.id;
-      const userId = req.params.userId;
+      const expensesId = req.params.expensesId;
+      const userId = req.params.id;
       deleteExpenses(userId, expensesId)
       return res.json({
           status: 'OK',
@@ -117,8 +120,9 @@ class UserController{
 
   async updateUserExpenses(req, res){
     try {
-      const expensesId = req.params.id;
-      const userId = req.params.userId;
+      const expensesId = req.params.expensesId;
+      const userId = req.params.id;
+
       updateUserExpenses(userId, expensesId, req.body);
       return res.json({
           status: 'OK',

@@ -1,13 +1,9 @@
-import { addExpenses, getAllExpenses, getAllUserExpenses } from '../db';
-import { deleteExpenses, getUserExpenses, updateUserExpenses } from './../db_mock';
-import { getCurrentUser, getCurrentUserId } from './../helpers';
+import { addExpenses, getAllExpenses, getAllUserExpenses, getUserExpenses, updateUserExpenses, deleteExpenses } from '../db';
 
 class ExpensesController {
   async create(req, res){
     try{
-      const currentUser: any = await getCurrentUser(req);
-      const currentUserId: number = await getCurrentUserId(req);
-      addExpenses(currentUser.id, req.body)
+      addExpenses(req.user.id, req.body)
       return res.json({
           status: 'OK'
       });
@@ -17,12 +13,11 @@ class ExpensesController {
   };
   async getAll(req, res){
     try{
-      const currentUser: any = await getCurrentUser(req);
-      // const isAdmin = currentUser.role && currentUser.role == 'SITE_ADMIN';
-const isAdmin = true;
+      const isAdmin = req.user.role && req.user.role == 'SITE_ADMIN';
+
       return res.json({
           status: 'OK',
-          expenses: isAdmin ? await getAllExpenses() : getAllUserExpenses(currentUser.id)
+          expenses: isAdmin ? await getAllExpenses() : await getAllUserExpenses(req.user.id)
       });
     } catch(e) {
       return res.status(500).json(e)
@@ -30,13 +25,11 @@ const isAdmin = true;
       
   };
   async update(req, res){
-    const userId = req.params.id;
     try {
       const expensesId = req.params.id;
-      const currentUser: any = await getCurrentUser(req);
-      updateUserExpenses(currentUser.id, expensesId, req.body);
       return res.json({
           status: 'OK',
+          expense: updateUserExpenses(req.user.id, expensesId, req.body)
       });
     } catch(err) {
         return res.json({
@@ -47,8 +40,7 @@ const isAdmin = true;
   async delete(req, res){
     try {
       const expensesId = req.params.id;
-      const currentUser: any = await getCurrentUser(req);
-      deleteExpenses(currentUser.id, expensesId);
+      await deleteExpenses(req.user.id, expensesId);
       return res.json({
           status: 'OK'
       });
@@ -61,12 +53,17 @@ const isAdmin = true;
   async getCurrent(req, res){
     try {
       const expensesId = req.params.id;
-      const currentUser: any= await getCurrentUser(req);
-      
-      return res.json({
+      const userId = req.params.userId || req.user.id;
+      const expense = await getUserExpenses(userId, expensesId);
+      if(expense) {
+        return res.json({
           status: 'OK',
-          expenses: getUserExpenses(currentUser.id, expensesId)
-      });
+          expense
+        });
+      } else {
+        return res.status(404).json(`Expense with id ${expensesId} is absent`)
+      }
+      
     } catch(e) {
       return res.status(500).json(e)
     }

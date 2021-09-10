@@ -66,12 +66,13 @@ export const getAllExpenses = async () => {
 
 export const getAllUserExpenses = async (userId: number) => {
   const expensesRepository = await getExpenseRepository();
-  const allExpenses = await expensesRepository.find({
+
+  return expensesRepository.find({
     order: {
         id: "ASC"
-    }, where: {user_id: userId}
+    }, where: {userId}
   });
-  return allExpenses;
+
 }
 export const addExpenses = async (userId, expense) => {
   const expRepository = await getExpenseRepository();
@@ -81,4 +82,18 @@ export const addExpenses = async (userId, expense) => {
     time: Date.now(),
     userId: userId
   });
+}
+export const getUserExpenses = async(userId: number, exId: number) => {
+  const expRepository = await getExpenseRepository();
+  return expRepository.findOne({userId, id: exId}, {relations: ['user']});
+}
+
+export const updateUserExpenses = async (userId: number, exId: number, expense: any) => {
+  const expRepository = await getExpenseRepository();
+  return await expRepository.update({userId, id: exId}, expense);
+}
+
+export const deleteExpenses = async (userId: number, exId: number) => {
+  const expRepository = await getExpenseRepository();
+  return expRepository.delete({userId, id: exId});
 }
