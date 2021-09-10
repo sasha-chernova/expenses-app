@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import {User} from './User';
 
@@ -32,6 +33,10 @@ export class Expense {
   })
   time!: number;
 
+  @Column()
+  user_id: number;
+
   @ManyToOne((type) => User, (user) => user.expenses)
+  // @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
   user!: User;
 }

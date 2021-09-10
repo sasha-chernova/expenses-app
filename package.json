@@ -12,9 +12,14 @@
       "docker:start": "sudo chmod -R 0777 ./data && docker-compose down && docker-compose up"
    },
    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "dotenv": "^10.0.0",
       "express": "^4.17.1",
+      "jsonwebtoken": "^8.5.1",
       "md5": "^2.3.0",
       "mysql": "^2.14.1",
+      "passport": "^0.4.1",
+      "passport-jwt": "^4.0.0",
       "pg": "^8.7.1",
       "pm2": "^5.1.1",
       "reflect-metadata": "^0.1.10",

@@ -1,11 +1,12 @@
-import { User } from '../db/entities/User';
-import { getAllExpenses, getAllUserExpenses, addExpenses, deleteExpenses, getUserExpenses, updateUserExpenses } from './../db_mock';
-import { getCurrentUser } from './../helpers';
+import { addExpenses, getAllExpenses, getAllUserExpenses } from '../db';
+import { deleteExpenses, getUserExpenses, updateUserExpenses } from './../db_mock';
+import { getCurrentUser, getCurrentUserId } from './../helpers';
 
 class ExpensesController {
   async create(req, res){
     try{
       const currentUser: any = await getCurrentUser(req);
+      const currentUserId: number = await getCurrentUserId(req);
       addExpenses(currentUser.id, req.body)
       return res.json({
           status: 'OK'
@@ -17,8 +18,8 @@ class ExpensesController {
   async getAll(req, res){
     try{
       const currentUser: any = await getCurrentUser(req);
-      const isAdmin = currentUser.roles && currentUser.roles.includes('SITE_ADMIN');
-    
+      // const isAdmin = currentUser.role && currentUser.role == 'SITE_ADMIN';
+const isAdmin = true;
       return res.json({
           status: 'OK',
           expenses: isAdmin ? await getAllExpenses() : getAllUserExpenses(currentUser.id)

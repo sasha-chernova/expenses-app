@@ -55,17 +55,17 @@ module.exports = {
     //     };
     //     return currentUser;
     // },
-    deleteUser: (userId) => {
-        const users = getDBUsers();
-        const currentUser = users.find(user => userId == user.id);
-        if(!currentUser) throw Error('Not found');
+    // deleteUser: (userId) => {
+    //     const users = getDBUsers();
+    //     const currentUser = users.find(user => userId == user.id);
+    //     if(!currentUser) throw Error('Not found');
 
-        const updatedUsers = users.filter(user => userId != user.id);
-        fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify(updatedUsers));
-    },
-    getAllExpenses: async () => {
-        return getDBExpenses();
-    },
+    //     const updatedUsers = users.filter(user => userId != user.id);
+    //     fs.writeFileSync(join(DB_BASEPATH, 'users.json'), JSON.stringify(updatedUsers));
+    // },
+    // getAllExpenses: async () => {
+    //     return getDBExpenses();
+    // },
     getAllUserExpenses: (userId) => {
         const allExpenses = getDBExpenses();
         const userExpenses = allExpenses.filter(exp => exp.userId == userId);

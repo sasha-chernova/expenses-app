@@ -1,10 +1,21 @@
-const md5 = require('md5');
-
+// const md5 = require('md5');
+const bcrypt = require('bcryptjs');
+import { Expense } from './entities/Expense';
 import { User } from './entities/User';
 import { getDBConnection as getDB } from './typeorm';
 
-async function getUserRepository() {
+export async function getUserRepository() {
   return (await getDB()).getRepository(User);
+}
+
+async function getExpenseRepository() {
+  return (await getDB()).getRepository(Expense);
+}
+
+export async function getDBExpenses(): Promise<Expense[]> {
+  const expensesRepository = await getExpenseRepository();
+
+  return expensesRepository.find({});
 }
 
 export async function getDBUsers(): Promise<User[]> {
@@ -21,22 +32,53 @@ export const getAllowedUsers = async () => {
 
 export const addUser = async (user: { userPass: string; userName: string, age: number }) => {
   const usersRepository = await getUserRepository();
-  const password = md5(user.userPass);
+  const hashedPassword = bcrypt.hashSync(user.userPass, 6);
+  // const password = md5(user.userPass);
   usersRepository.save({
     firstName: user.userName,
     lastName: '-',
-    passwd: password,
+    passwd: hashedPassword,
     age: user.age,
   });
 };
 
 export const updateUser = async (userId: number, user: any) => {
   const usersRepository = await getUserRepository();
-  const updatedUser = usersRepository.findOne(userId);
-  return updatedUser; 
+  return await usersRepository.update({id: userId}, user);
+
 }
 
 export const getUser = async (userId: number) => {
   const usersRepository = await getUserRepository();
-  return usersRepository.findOne(userId);
+  const user = await usersRepository.findOne({id: userId});
+
+  return user;
+}
+export const deleteUser = async (userId: number) => {
+  const usersRepository = await getUserRepository();
+  const res = await usersRepository.delete({id: userId});
+  return res;
+}
+
+export const getAllExpenses = async () => {
+  return getDBExpenses();
+}
+
+export const getAllUserExpenses = async (userId: number) => {
+  const expensesRepository = await getExpenseRepository();
+  const allExpenses = await expensesRepository.find({
+    order: {
+        id: "ASC"
+    }, where: {user_id: userId}
+  });
+  return allExpenses;
+}
+export const addExpenses = async (userId, expense) => {
+  const expRepository = await getExpenseRepository();
+  expRepository.save({
+    purpose: expense.purpose,
+    amount: expense.amount,
+    time: Date.now(),
+    userId: userId
+  });
 }

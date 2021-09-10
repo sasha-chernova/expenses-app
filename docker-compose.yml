@@ -5,7 +5,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - "src:/home/app/src"
+      - "./src:/home/app/src"
     ports:
       - "3300:3300"
       - "9229:9229"
@@ -21,12 +21,6 @@ services:
       - "data:/var/lib/postgresql/data"
 
 volumes:
-  src:
-    driver: "local"
-    driver_opts:
-      type: "efs"
-      device: "$PWD/src"
-      o: "bind,777"
   data:
     driver: "local"
     driver_opts:

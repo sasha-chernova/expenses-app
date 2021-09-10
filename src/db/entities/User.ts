@@ -4,7 +4,7 @@ import {
   Column,
   OneToMany,
 } from 'typeorm';
-import {Expense} from './Expense';
+import { Expense } from './Expense';
 
 @Entity({
   name: 'users',

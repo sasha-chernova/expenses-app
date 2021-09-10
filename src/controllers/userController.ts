@@ -1,10 +1,5 @@
-import { addUser, getAllowedUsers, getUser, updateUser } from '../db';
+import { addUser, getAllowedUsers, getUser, updateUser, deleteUser } from '../db';
 import { 
-  // addUser, 
-  // getAllowedUsers, 
-  // updateUser, 
-  deleteUser, 
-  // getUser, 
   getAllUserExpenses,
   deleteExpenses,
   updateUserExpenses,
@@ -76,7 +71,7 @@ class UserController{
     
       return res.json({
           status: 'OK',
-          user: getUser(userId)
+          user: await getUser(userId)
       });
     } catch(e) {
       return res.status(500).json(e)
